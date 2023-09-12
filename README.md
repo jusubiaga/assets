@@ -32,3 +32,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Utils
+
+Prisma:
+
+init: npm prisma init
+planescale: https://planetscale.com/
+db pwd:
+
+- db-jmumpa423
+- usr: c9dqvrdawoebn7bc277a
+- pwd: pscale_pw_LuC4v7OB9KTBlaNhca1piiFtbc1R4GQcJajbbTKphJu
+
+Generate and push
+
+npx prisma generate
+
+npx prisma push

@@ -4,6 +4,7 @@ import { Home, Plus, Settings } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
+import { Suspense } from "react";
 
 // import { useProModal } from "@/hooks/use-pro-modal";
 
@@ -28,9 +29,21 @@ const Sidebar = () => {
     },
     {
       icon: Plus,
-      href: "/companion/new",
-      label: "Create",
+      href: "/projects/new",
+      label: "Project",
       pro: true,
+    },
+    {
+      icon: Settings,
+      href: "/projects",
+      label: "Projects",
+      pro: false,
+    },
+    {
+      icon: Settings,
+      href: "/assets",
+      label: "Assets",
+      pro: false,
     },
     {
       icon: Settings,

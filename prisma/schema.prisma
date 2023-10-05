@@ -12,6 +12,39 @@ generator client {
 }
 
 model Project {
-  id   String @id @default(uuid())
-  name String
+  id               String   @id @default(uuid())
+  name             String
+  description      String?
+  country          String
+  outputFormat     String
+  collection       String
+  imagesCollection String
+  logoCollection   String
+  badgeCollection  String
+  placidTemplate   String
+  channel          String
+  userId           String
+  assets           Assets[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Assets {
+  id              String   @id @default(uuid())
+  project         Project  @relation(fields: [projectId], references: [id])
+  projectId       String
+  statusId        Int
+  headline        String
+  subline         String
+  backgraundColor String
+  headlineColor   String
+  sublineColor    String
+  image           String
+  logo            String
+  badged          String
+  qr              String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([projectId])
 }

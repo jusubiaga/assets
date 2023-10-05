@@ -49,4 +49,4 @@ Generate and push
 
 npx prisma generate
 
-npx prisma push
+npx prisma db push

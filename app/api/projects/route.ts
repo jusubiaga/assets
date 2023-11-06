@@ -18,7 +18,16 @@ export async function GET(request: Request) {
   //   );
   // }
 
-  const projects = await prisma.project.findMany();
+  const userId = await currentUser();
+
+  const projects = await prisma.project.findMany({
+    include: {
+      outputFormatFK: true,
+      channelFK: true,
+      countryFK: true,
+    },
+    where: { userId: userId?.id },
+  });
 
   return new Response(JSON.stringify(projects), { status: 200 });
 }
@@ -30,14 +39,14 @@ export async function POST(req: Request) {
     const {
       name,
       description,
-      country,
-      outputFormat,
+      countryId,
+      outputFormatId,
       collection,
       imagesCollection,
       logoCollection,
       badgeCollection,
       placidTemplate,
-      channel,
+      channelId,
     } = body;
 
     if (!user || !user.id || !user.firstName) {
@@ -46,14 +55,14 @@ export async function POST(req: Request) {
 
     if (
       !name ||
-      !country ||
-      !outputFormat ||
+      !countryId ||
+      !outputFormatId ||
       !collection ||
       !imagesCollection ||
       !logoCollection ||
       !badgeCollection ||
       !placidTemplate ||
-      !channel
+      !channelId
     ) {
       return new NextResponse("Missing required field", { status: 400 });
     }
@@ -63,14 +72,14 @@ export async function POST(req: Request) {
         userId: user.id,
         name,
         description,
-        country,
-        outputFormat,
+        countryId,
+        outputFormatId,
         collection,
         imagesCollection,
         logoCollection,
         badgeCollection,
         placidTemplate,
-        channel,
+        channelId,
       },
     });
 

@@ -26,14 +26,14 @@ export async function PATCH(
     const {
       name,
       description,
-      country,
-      outputFormat,
+      countryId,
+      outputFormatId,
       collection,
       imagesCollection,
       logoCollection,
       badgeCollection,
       placidTemplate,
-      channel,
+      channelId,
     } = body;
 
     if (!params.id) {
@@ -47,14 +47,14 @@ export async function PATCH(
     if (
       !name ||
       !description ||
-      !country ||
-      !outputFormat ||
+      !countryId ||
+      !outputFormatId ||
       !collection ||
       !imagesCollection ||
       !logoCollection ||
       !badgeCollection ||
       !placidTemplate ||
-      !channel
+      !channelId
     ) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
@@ -64,14 +64,14 @@ export async function PATCH(
       data: {
         name,
         description,
-        country,
-        outputFormat,
+        countryId,
+        outputFormatId,
         collection,
         imagesCollection,
         logoCollection,
         badgeCollection,
         placidTemplate,
-        channel,
+        channelId,
       },
     });
 

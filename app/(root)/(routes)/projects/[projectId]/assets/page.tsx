@@ -11,11 +11,12 @@ import { Separator } from "@/components/ui/separator";
 import { Project } from "@prisma/client";
 import { Value } from "@radix-ui/react-select";
 import axios from "axios";
-import { Plus } from "lucide-react";
+import { ArrowLeftCircle, Plus } from "lucide-react";
 import Link from "next/link";
 import ProjectSelector from "../components/project-selector";
 import { DataTable } from "../components/data-table";
 import AssetsTable from "../components/assets-table";
+import { getAssets, getProjects } from "@/app/services/projects";
 
 type Props = {
   params: {
@@ -28,11 +29,12 @@ type ProjectsList = {
   name: string;
   selected: boolean;
 };
+
 const getProjectsList = async (selectedProject: string) => {
   try {
-    const result = await axios.get("http://localhost:3000/api/projects");
+    const result = await getProjects();
     console.log(selectedProject);
-    const projectList = result.data.map((item: Project) => {
+    const projectList = result.map((item: Project) => {
       return {
         id: item.id,
         name: item.name,
@@ -47,25 +49,30 @@ const getProjectsList = async (selectedProject: string) => {
   }
 };
 
-const getAssets = async (selectedProject: string) => {
-  try {
-    const result = await axios.get(
-      `http://localhost:3000/api/projects/${selectedProject}/assets`
-    );
+// const getAssets = async (selectedProject: string) => {
+//   try {
+//     const result = await axios.get(
+//       `http://localhost:3000/api/projects/${selectedProject}/assets`
+//     );
 
-    const projectList = result.data;
-    console.log(projectList);
-    return projectList;
-  } catch (error) {
-    console.log("could not retrive project");
-    return [];
-  }
-};
+//     const projectList = result.data;
+//     console.log(projectList);
+//     return projectList;
+//   } catch (error) {
+//     console.log("could not retrive project");
+//     return [];
+//   }
+// };
 
 async function AssetsByProjectPage({ params }: Props) {
   const selectedProject: string = params.projectId;
   const projectsList = await getProjectsList(selectedProject);
   const Assets = await getAssets(selectedProject);
+
+  // const handleGoProjects = (e: any) => {
+  //   e.preventDefault();
+  //   router.replace("/");
+  // };
 
   return (
     <div className="h-full p-4 space-y-2">
@@ -84,16 +91,21 @@ async function AssetsByProjectPage({ params }: Props) {
         projectsList={projectsList}
         selectedProject={selectedProject}
       ></ProjectSelector>
-      <AssetsTable data={Assets} />
+      <Button className="ml-2">
+        <Plus className="h-4 w-4 mr-2" />
+        <Link href="/assets/new">New Assest</Link>
+      </Button>
 
       <Button className="ml-2">
-        <Plus className="h-4 w-4 fill-white text-white mr-2" />
-        <Link href="/assets/new">New Assest</Link>
+        <ArrowLeftCircle className="w-4 h-4 mr-2" />
+        <Link href="/">See all Projets</Link>
       </Button>
 
       <div className="pt-4 pb-4">
         <Separator />
       </div>
+
+      <AssetsTable data={Assets} />
     </div>
   );
 }

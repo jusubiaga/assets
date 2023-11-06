@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import { Project } from "@prisma/client";
+import { Channel, Country, OutputFormat, Project } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,9 +24,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Wand2 } from "lucide-react";
+import { ArrowLeftCircle, Wand2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 interface ProjectFormProps {
   initialData: Project | null;
@@ -39,10 +40,10 @@ const formSchema = z.object({
   description: z.string().min(1, {
     message: "Description is required.",
   }),
-  country: z.string().min(1, {
+  countryId: z.string().min(1, {
     message: "Country is required.",
   }),
-  outputFormat: z.string().min(1, {
+  outputFormatId: z.string().min(1, {
     message: "Output Format is required.",
   }),
   collection: z.string().min(1, {
@@ -60,7 +61,7 @@ const formSchema = z.object({
   placidTemplate: z.string().min(1, {
     message: "Description is required.",
   }),
-  channel: z.string().min(1, {
+  channelId: z.string().min(1, {
     message: "Description is required.",
   }),
   // userId: z.string().min(1, {
@@ -131,11 +132,35 @@ const CHANNEL = [
   { id: "5", name: "Placid Template 5" },
 ];
 
+const getChannels = async () => {
+  const channels = await axios.get("http://localhost:3000/api/channels");
+  console.log(channels.data);
+  return channels.data;
+};
+
 const ProjectForm = ({ initialData }: ProjectFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
+  const [channels, setChannels] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [outputFormats, setOutputFormats] = useState([]);
 
-  console.log(initialData);
+  useEffect(() => {
+    (async () => {
+      const channels = await axios.get("http://localhost:3000/api/channels");
+      setChannels(channels.data);
+    })();
+    (async () => {
+      const countries = await axios.get("http://localhost:3000/api/countries");
+      setCountries(countries.data);
+    })();
+    (async () => {
+      const outputFormats = await axios.get(
+        "http://localhost:3000/api/output-formats"
+      );
+      setOutputFormats(outputFormats.data);
+    })();
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -143,14 +168,14 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
     defaultValues: initialData || {
       name: "",
       description: "",
-      country: "",
-      outputFormat: "",
+      countryId: "",
+      outputFormatId: "",
       collection: "",
       imagesCollection: "",
       logoCollection: "",
       badgeCollection: "",
       placidTemplate: "",
-      channel: "",
+      channelId: "",
     },
   });
 
@@ -162,16 +187,18 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
       if (initialData) {
         await axios.patch(`/api/projects/${initialData.id}`, values);
         // router.refresh();
-        router.push("/projects");
+        // router.push("/projects");
       } else {
         await axios.post("/api/projects/", values);
-        router.push("/assets");
+        // router.push("/assets");
       }
-
       toast({
         description: "Success",
-        duration: 3000,
+        duration: 2000,
       });
+
+      router.refresh();
+      router.push("/");
     } catch (e) {
       toast({
         variant: "destructive",
@@ -180,6 +207,12 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
       });
     }
   };
+
+  const handleGoProjects = (e: any) => {
+    e.preventDefault();
+    router.replace("/");
+  };
+
   return (
     <div className="h-full p-4 space-y-2 mx-auto">
       <Form {...form}>
@@ -229,7 +262,7 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
             />
             <FormField
               control={form.control}
-              name="outputFormat"
+              name="outputFormatId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Output Format</FormLabel>
@@ -248,9 +281,12 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {OUTPUTFORMAT.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                      {outputFormats.map((outputFormat: OutputFormat) => (
+                        <SelectItem
+                          key={outputFormat.id}
+                          value={outputFormat.id}
+                        >
+                          {outputFormat.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -421,7 +457,7 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
             />
             <FormField
               control={form.control}
-              name="channel"
+              name="channelId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Channel</FormLabel>
@@ -440,9 +476,9 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {CHANNEL.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                      {channels.map((channel: Channel) => (
+                        <SelectItem key={channel.id} value={channel.id}>
+                          {channel.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -453,7 +489,7 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
             />
             <FormField
               control={form.control}
-              name="country"
+              name="countryId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Country</FormLabel>
@@ -472,9 +508,9 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {COUNTRY.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                      {countries.map((country: Country) => (
+                        <SelectItem key={country.id} value={country.id}>
+                          {country.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -488,6 +524,10 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
             <Button size="lg" disabled={isLoading}>
               {initialData ? "Edit your project" : "Create your project"}
               <Wand2 className="w-4 h-4 ml-2" />
+            </Button>
+            <Button size="lg" onClick={handleGoProjects}>
+              Go to Projects
+              <ArrowLeftCircle className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </form>

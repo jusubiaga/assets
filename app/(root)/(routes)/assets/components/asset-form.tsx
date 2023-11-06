@@ -50,7 +50,7 @@ const formSchema = z.object({
   projectId: z.string().min(1, {
     message: "Name is required.",
   }),
-  statusId: z.number(),
+  statusId: z.coerce.number(),
   headline: z.string().min(1, {
     message: "Description is required.",
   }),
@@ -108,21 +108,22 @@ const AssetForm = ({ initialData }: AssetFormProps) => {
   });
 
   const isLoading = form.formState.isSubmitting;
-  const onClickHandle = () => {
-    console.log("on Submit", initialData);
-  };
+
+  // const onClickHandle = () => {
+  //   console.log("on Submit", initialData);
+  // };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       console.log("on Submit", initialData);
       if (initialData) {
         console.log("PATCH ", values);
-        // await axios.patch(`/api/projects/${initialData.id}`, values);
-        // router.push("/projects");
+        await axios.patch(`/api/projects/${initialData.id}`, values);
+        router.push("/assets");
       } else {
         console.log("POST ", values);
-        // await axios.post("/api/projects/", values);
-        // router.push("/assets");
+        await axios.post("/api/assets/", values);
+        router.push("/assets");
       }
 
       toast({
@@ -171,7 +172,7 @@ const AssetForm = ({ initialData }: AssetFormProps) => {
                 </FormItem>
               )}
             />
-            {/* <FormField
+            <FormField
               name="statusId"
               control={form.control}
               render={({ field }) => (
@@ -188,7 +189,7 @@ const AssetForm = ({ initialData }: AssetFormProps) => {
                   <FormMessage />
                 </FormItem>
               )}
-            /> */}
+            />
 
             <FormField
               name="headline"
@@ -294,31 +295,28 @@ const AssetForm = ({ initialData }: AssetFormProps) => {
                 </FormItem>
               )}
             />
+            <FormField
+              name="badged"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>badged</FormLabel>
+                  <FormControl>
+                    <Input disabled={isLoading} placeholder="" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <div className="w-full flex justify-center">
-            <Button
-              size="lg"
-              disabled={isLoading}
-              onClick={() => {
-                onClickHandle();
-              }}
-            >
+            <Button size="lg" disabled={isLoading}>
               {initialData ? "Edit your asset" : "Create your asset"}
               <Wand2 className="w-4 h-4 ml-2" />
             </Button>
           </div>
         </form>
       </Form>
-      <Button
-        size="lg"
-        disabled={isLoading}
-        onClick={() => {
-          onClickHandle();
-        }}
-      >
-        {initialData ? "Edit your asset" : "Create your asset"}
-        <Wand2 className="w-4 h-4 ml-2" />
-      </Button>
     </div>
   );
 };

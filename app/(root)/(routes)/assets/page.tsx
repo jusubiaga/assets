@@ -16,17 +16,7 @@ import { DataTable } from "./components/data-table";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
-
-const getProjectsList = async () => {
-  try {
-    const result = await axios.get("http://localhost:3000/api/projects");
-    console.log(result.data);
-    return result.data;
-  } catch (error) {
-    console.log("could not retrive project");
-    return [];
-  }
-};
+import { getProjects } from "@/app/services/projects";
 
 async function getData(): Promise<Payment[]> {
   // Fetch data from your API here.
@@ -42,8 +32,7 @@ async function getData(): Promise<Payment[]> {
 }
 
 export default async function AssetsPage({ selectedProject }: { props: any }) {
-  const projectsList = await getProjectsList();
-  const data = await getData();
+  const projectsList = await getProjects();
 
   return (
     <div className="h-full p-4 space-y-2">

@@ -45,8 +45,10 @@ db pwd:
 - usr: c9dqvrdawoebn7bc277a
 - pwd: pscale_pw_LuC4v7OB9KTBlaNhca1piiFtbc1R4GQcJajbbTKphJu
 
-Generate and push
+## Generate and push
 
 npx prisma generate
 
 npx prisma db push
+
+npx prisma studio

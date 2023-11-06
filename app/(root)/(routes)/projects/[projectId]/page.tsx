@@ -1,5 +1,6 @@
 import axios from "axios";
 import ProjectForm from "./components/project-form";
+import { getProject } from "@/app/services/projects";
 
 interface ProjectIdPageProps {
   params: {
@@ -8,16 +9,7 @@ interface ProjectIdPageProps {
 }
 
 const ProjectIdPage = async ({ params }: ProjectIdPageProps) => {
-  let project = null;
-  try {
-    const res = await axios.get(
-      `http://localhost:3000/api/projects/${params.projectId}`
-    );
-
-    project = await res.data;
-    console.log(project);
-  } catch (error) {}
-
+  const project = await getProject(params.projectId);
   return (
     <div className="h-full p-4 space-y-2">
       <ProjectForm initialData={project} />

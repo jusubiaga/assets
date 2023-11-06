@@ -48,30 +48,26 @@ import {
 import axios from "axios";
 import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { type } from "os";
+import { Project } from "@prisma/client";
 
-// change
-export type Project = {
-  id: string;
-  name: string;
-  description: string;
-  country: string;
-  outputFormat: string;
-  collection: string;
-  imagesCollection: string;
-  logoCollection: string;
-  badgeCollection: string;
-  placidTamplate: string;
-  userId: string;
+type ProjectsTableProps = {
+  data: Project[];
+  search?: string;
 };
 
-export function DataTable() {
-  const [data, setData] = React.useState([]);
+export function ProjectsTable({ data, search }: ProjectsTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
+    React.useState<VisibilityState>({
+      id: false,
+      channelId: false,
+      countryId: false,
+      outputFormatId: false,
+    });
   const [rowSelection, setRowSelection] = React.useState({});
   const router = useRouter();
 
@@ -116,19 +112,49 @@ export function DataTable() {
       ),
     },
     {
-      accessorKey: "country",
+      accessorKey: "countryId",
       header: "Country",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("country")}</div>
+        <div className="capitalize">{row.getValue("countryId")}</div>
       ),
     },
     {
-      accessorKey: "outputFormat",
+      accessorKey: "countryFK.name",
+      header: "Country",
+      // cell: ({ row }) => (
+      //   <div className="capitalize">{row.getValue("countryId")}</div>
+      // ),
+    },
+
+    {
+      accessorKey: "outputFormatId",
       header: "Output Format",
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("outputFormat")}</div>
+        <div className="capitalize">{row.getValue("outputFormatId")}</div>
       ),
     },
+    {
+      accessorKey: "outputFormatFK.name",
+      header: "Output Format",
+      // cell: ({ row }) => (
+      //   <div className="capitalize">{row.getValue("outputFormatFK")}</div>
+      // ),
+    },
+    {
+      accessorKey: "channelId",
+      header: "channel",
+      cell: ({ row }) => (
+        <div className="capitalize">{row.getValue("channelId")}</div>
+      ),
+    },
+    {
+      accessorKey: "channelFK.name",
+      header: "channel",
+      // cell: ({ row }) => (
+      //   <div className="capitalize">{row.getValue("outputFormatFK")}</div>
+      // ),
+    },
+
     {
       accessorKey: "collection",
       header: "Collection",
@@ -234,15 +260,8 @@ export function DataTable() {
   });
 
   React.useEffect(() => {
-    (async () => {
-      try {
-        const result = await axios.get("/api/projects");
-        setData(result.data);
-      } catch (error) {
-        console.log("ERROR: ", error);
-      }
-    })();
-  }, []);
+    table.getColumn("name")?.setFilterValue(search);
+  }, [table, search]);
 
   const editProject = async (row: any) => {
     console.log("Edit porject ", row.original);
@@ -267,10 +286,10 @@ export function DataTable() {
 
     try {
       await axios.delete(`/api/projects/${row.original.id}`);
-      const copyData = [...data];
-      copyData.splice(row.index, 1);
-      setData(copyData);
-
+      // const copyData = [...data];
+      // copyData.splice(row.index, 1);
+      // setData(copyData);
+      router.refresh();
       toast({
         description: "Success",
         duration: 2000,
@@ -287,7 +306,7 @@ export function DataTable() {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
+        {/* <Input
           placeholder="Filter name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
@@ -306,7 +325,7 @@ export function DataTable() {
 
         <Button className="ml-2">
           <Trash2 className="w-4 h-4" />
-        </Button>
+        </Button> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -357,8 +376,8 @@ export function DataTable() {
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {table.getRowModel()?.rows?.length ? (
+              table.getRowModel()?.rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}

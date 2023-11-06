@@ -1,11 +1,19 @@
 import { authMiddleware } from "@clerk/nextjs";
+import { channel } from "diagnostics_channel";
 
 // This example protects all routes including api/trpc routes
 // Please edit this to allow other routes to be public as needed.
 // See https://clerk.com/docs/nextjs/middleware for more information about configuring your middleware
 export default authMiddleware({
   // publicRoutes: ["/api/webhook"],
-  publicRoutes: ["/api/projects", "/api/projects/(.*)"],
+  publicRoutes: [
+    "/api/projects",
+    "/api/projects/(.*)",
+    "/api/channels",
+    "/api/output-formats",
+    "/api/countries",
+    "/api/assets",
+  ],
 });
 
 export const config = {

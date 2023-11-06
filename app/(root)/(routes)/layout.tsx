@@ -1,6 +1,5 @@
 import { Navbar } from "@/components/navbar";
 import Sidebar from "@/components/sidebar";
-import { Home, Plus, Settings } from "lucide-react";
 
 export default function RootLayout({
   children,

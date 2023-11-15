@@ -69,6 +69,9 @@ async function AssetsByProjectPage({ params }: Props) {
   const projectsList = await getProjectsList(selectedProject);
   const Assets = await getAssets(selectedProject);
 
+  const getNew = () => {
+    return `/project/${selectedProject}assets/new`;
+  };
   // const handleGoProjects = (e: any) => {
   //   e.preventDefault();
   //   router.replace("/");
@@ -76,7 +79,7 @@ async function AssetsByProjectPage({ params }: Props) {
 
   return (
     <div className="h-full p-4 space-y-2">
-      <div className="space-y-2 w-full col-span-2">
+      {/* <div className="space-y-2 w-full col-span-2">
         <div>
           <h3 className="text-lg font-medium">Assets List</h3>
           <p className="text-sm text-muted-foreground">
@@ -85,7 +88,7 @@ async function AssetsByProjectPage({ params }: Props) {
           <p>PROJECT: {selectedProject}</p>
         </div>
         <Separator className="bg-primary/10"></Separator>
-      </div>
+      </div> */}
 
       <ProjectSelector
         projectsList={projectsList}
@@ -93,7 +96,7 @@ async function AssetsByProjectPage({ params }: Props) {
       ></ProjectSelector>
       <Button className="ml-2">
         <Plus className="h-4 w-4 mr-2" />
-        <Link href="/assets/new">New Assest</Link>
+        <Link href={`/projects/${selectedProject}/assets/new`}>New Assest</Link>
       </Button>
 
       <Button className="ml-2">

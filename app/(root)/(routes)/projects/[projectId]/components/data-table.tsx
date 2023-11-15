@@ -44,99 +44,99 @@ import {
 } from "@/components/ui/table";
 import axios from "axios";
 import { type } from "os";
-import { Project } from "@prisma/client";
+import { Assets, Project } from "@prisma/client";
 
 type DataTableProps = {
   project: Project;
 };
 
-export type Assets = {
-  id: string;
-  projectId: string;
-  status: string;
-  headline: string;
-  subline: string;
-  backgraundColor: string;
-  headlineColor: string;
-  sublineColor: string;
-  image: string;
-  logo: string;
-  badged: string;
-  qr: string;
-};
+// export type Assets = {
+//   id: string;
+//   projectId: string;
+//   status: string;
+//   headline: string;
+//   subline: string;
+//   backgraundColor: string;
+//   headlineColor: string;
+//   sublineColor: string;
+//   image: string;
+//   logo: string;
+//   badged: string;
+//   qr: string;
+// };
 
-const data: Assets[] = [
-  {
-    id: "aa1",
-    projectId: "bb",
-    status: "cc",
-    headline: "dd",
-    subline: "ee",
-    backgraundColor: "hh",
-    headlineColor: "",
-    sublineColor: "",
-    image: "",
-    logo: "",
-    badged: "",
-    qr: "",
-  },
-  {
-    id: "aa2",
-    projectId: "bb",
-    status: "cc",
-    headline: "dd",
-    subline: "ee",
-    backgraundColor: "hh",
-    headlineColor: "",
-    sublineColor: "",
-    image: "",
-    logo: "",
-    badged: "",
-    qr: "",
-  },
-  {
-    id: "aa3",
-    projectId: "bb",
-    status: "cc",
-    headline: "dd",
-    subline: "ee",
-    backgraundColor: "hh",
-    headlineColor: "",
-    sublineColor: "",
-    image: "",
-    logo: "",
-    badged: "",
-    qr: "",
-  },
-  {
-    id: "aa4",
-    projectId: "bb",
-    status: "cc",
-    headline: "dd",
-    subline: "ee",
-    backgraundColor: "hh",
-    headlineColor: "",
-    sublineColor: "",
-    image: "",
-    logo: "",
-    badged: "",
-    qr: "",
-  },
-  {
-    id: "aa5",
-    projectId: "bb",
-    status: "cc",
-    headline: "dd",
-    subline: "ee",
-    backgraundColor: "hh",
-    headlineColor: "",
-    sublineColor: "",
-    image: "",
-    logo: "",
-    badged: "",
-    qr: "",
-  },
-];
+// const data: Assets[] = [
+//   {
+//     id: "aa1",
+//     projectId: "bb",
+//     status: "cc",
+//     headline: "dd",
+//     subline: "ee",
+//     backgraundColor: "hh",
+//     headlineColor: "",
+//     sublineColor: "",
+//     image: "",
+//     logo: "",
+//     badged: "",
+//     qr: "",
+//   },
+//   {
+//     id: "aa2",
+//     projectId: "bb",
+//     status: "cc",
+//     headline: "dd",
+//     subline: "ee",
+//     backgraundColor: "hh",
+//     headlineColor: "",
+//     sublineColor: "",
+//     image: "",
+//     logo: "",
+//     badged: "",
+//     qr: "",
+//   },
+//   {
+//     id: "aa3",
+//     projectId: "bb",
+//     status: "cc",
+//     headline: "dd",
+//     subline: "ee",
+//     backgraundColor: "hh",
+//     headlineColor: "",
+//     sublineColor: "",
+//     image: "",
+//     logo: "",
+//     badged: "",
+//     qr: "",
+//   },
+//   {
+//     id: "aa4",
+//     projectId: "bb",
+//     status: "cc",
+//     headline: "dd",
+//     subline: "ee",
+//     backgraundColor: "hh",
+//     headlineColor: "",
+//     sublineColor: "",
+//     image: "",
+//     logo: "",
+//     badged: "",
+//     qr: "",
+//   },
+//   {
+//     id: "aa5",
+//     projectId: "bb",
+//     status: "cc",
+//     headline: "dd",
+//     subline: "ee",
+//     backgraundColor: "hh",
+//     headlineColor: "",
+//     sublineColor: "",
+//     image: "",
+//     logo: "",
+//     badged: "",
+//     qr: "",
+//   },
+// ];
 
 export const columns: ColumnDef<Assets>[] = [
   {

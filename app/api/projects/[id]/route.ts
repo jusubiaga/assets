@@ -16,6 +16,7 @@ export async function GET(
 
   return new Response(JSON.stringify(project));
 }
+
 export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }

@@ -13,6 +13,7 @@ export default authMiddleware({
     "/api/output-formats",
     "/api/countries",
     "/api/assets",
+    "/api/assets/(.*)",
   ],
 });
 

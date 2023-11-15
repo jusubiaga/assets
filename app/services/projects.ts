@@ -37,3 +37,15 @@ export const getAssets = async (projectId: string) => {
     return [];
   }
 };
+
+export const getAsset = async (id: string) => {
+  try {
+    const res = await axios.get(`http://localhost:3000/api/assets/${id}`);
+
+    const asset = await res.data;
+    console.log(asset);
+    return asset;
+  } catch (error) {
+    console.log("ERROR: ", error);
+  }
+};

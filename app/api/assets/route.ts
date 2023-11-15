@@ -2,8 +2,6 @@ import prismadb from "@/lib/prismadb";
 import { currentUser } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function GET(request: Request) {}
-
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -49,3 +47,5 @@ export async function POST(req: Request) {
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
+
+export function DELETE() {}

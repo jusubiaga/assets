@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Plus, Settings } from "lucide-react";
+import { Home, Plus, Settings, GanttChartSquare } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -24,24 +24,24 @@ const Sidebar = () => {
     {
       icon: Home,
       href: "/",
-      label: "Home",
-      pro: false,
-    },
-    {
-      icon: Plus,
-      href: "/projects/new",
       label: "Project",
-      pro: true,
-    },
-    {
-      icon: Settings,
-      href: "/projects",
-      label: "Projects",
       pro: false,
     },
+    // {
+    //   icon: Plus,
+    //   href: "/projects/new",
+    //   label: "Project",
+    //   pro: true,
+    // },
+    // {
+    //   icon: Settings,
+    //   href: "/projects",
+    //   label: "Projects",
+    //   pro: false,
+    // },
     {
-      icon: Settings,
-      href: "/assets",
+      icon: GanttChartSquare,
+      href: "projects/new/assets",
       label: "Assets",
       pro: false,
     },

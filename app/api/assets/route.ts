@@ -19,6 +19,16 @@ export async function POST(req: Request) {
       logo,
       badged,
       qr,
+      country,
+      addOn,
+      language,
+      creativeImagePerson,
+      creativeImageScreen,
+      messagingBenefits,
+      tonality,
+      addressedGroup,
+      creativeImageText,
+      uniqueText,
     } = body;
 
     if (!user || !user.id || !user.firstName) {
@@ -38,6 +48,16 @@ export async function POST(req: Request) {
         logo,
         badged,
         qr,
+        country,
+        addOn,
+        language,
+        creativeImagePerson,
+        creativeImageScreen,
+        messagingBenefits,
+        tonality,
+        addressedGroup,
+        creativeImageText,
+        uniqueText,
       },
     });
 

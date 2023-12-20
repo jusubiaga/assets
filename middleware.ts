@@ -14,6 +14,9 @@ export default authMiddleware({
     "/api/countries",
     "/api/assets",
     "/api/assets/(.*)",
+    "/api/collections",
+    "/api/collections/(.*)",
+    "/api/colors",
   ],
 });
 

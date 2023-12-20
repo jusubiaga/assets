@@ -19,7 +19,9 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -27,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeftCircle, Wand2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface ProjectFormProps {
   initialData: Project | null;
@@ -138,14 +140,79 @@ const getChannels = async () => {
   return channels.data;
 };
 
+// export function SelectScrollable({ data }) {
+//   return (
+//     <Select>
+//       <SelectTrigger className="w-[280px]">
+//         <SelectValue placeholder="Select a timezone" />
+//       </SelectTrigger>
+//       <SelectContent>
+//         <SelectGroup>
+//           <SelectLabel>North America</SelectLabel>
+//           <SelectItem value="est">Eastern Standard Time (EST)</SelectItem>
+//           <SelectItem value="cst">Central Standard Time (CST)</SelectItem>
+//           <SelectItem value="mst">Mountain Standard Time (MST)</SelectItem>
+//           <SelectItem value="pst">Pacific Standard Time (PST)</SelectItem>
+//           <SelectItem value="akst">Alaska Standard Time (AKST)</SelectItem>
+//           <SelectItem value="hst">Hawaii Standard Time (HST)</SelectItem>
+//         </SelectGroup>
+//         <SelectGroup>
+//           <SelectLabel>Europe & Africa</SelectLabel>
+//           <SelectItem value="gmt">Greenwich Mean Time (GMT)</SelectItem>
+//           <SelectItem value="cet">Central European Time (CET)</SelectItem>
+//           <SelectItem value="eet">Eastern European Time (EET)</SelectItem>
+//           <SelectItem value="west">
+//             Western European Summer Time (WEST)
+//           </SelectItem>
+//           <SelectItem value="cat">Central Africa Time (CAT)</SelectItem>
+//           <SelectItem value="eat">East Africa Time (EAT)</SelectItem>
+//         </SelectGroup>
+//         <SelectGroup>
+//           <SelectLabel>Asia</SelectLabel>
+//           <SelectItem value="msk">Moscow Time (MSK)</SelectItem>
+//           <SelectItem value="ist">India Standard Time (IST)</SelectItem>
+//           <SelectItem value="cst_china">China Standard Time (CST)</SelectItem>
+//           <SelectItem value="jst">Japan Standard Time (JST)</SelectItem>
+//           <SelectItem value="kst">Korea Standard Time (KST)</SelectItem>
+//           <SelectItem value="ist_indonesia">
+//             Indonesia Central Standard Time (WITA)
+//           </SelectItem>
+//         </SelectGroup>
+//         <SelectGroup>
+//           <SelectLabel>Australia & Pacific</SelectLabel>
+//           <SelectItem value="awst">
+//             Australian Western Standard Time (AWST)
+//           </SelectItem>
+//           <SelectItem value="acst">
+//             Australian Central Standard Time (ACST)
+//           </SelectItem>
+//           <SelectItem value="aest">
+//             Australian Eastern Standard Time (AEST)
+//           </SelectItem>
+//           <SelectItem value="nzst">New Zealand Standard Time (NZST)</SelectItem>
+//           <SelectItem value="fjt">Fiji Time (FJT)</SelectItem>
+//         </SelectGroup>
+//         <SelectGroup>
+//           <SelectLabel>South America</SelectLabel>
+//           <SelectItem value="art">Argentina Time (ART)</SelectItem>
+//           <SelectItem value="bot">Bolivia Time (BOT)</SelectItem>
+//           <SelectItem value="brt">Brasilia Time (BRT)</SelectItem>
+//           <SelectItem value="clt">Chile Standard Time (CLT)</SelectItem>
+//         </SelectGroup>
+//       </SelectContent>
+//     </Select>
+//   );
+// }
 const ProjectForm = ({ initialData }: ProjectFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
   const [channels, setChannels] = useState([]);
   const [countries, setCountries] = useState([]);
   const [outputFormats, setOutputFormats] = useState([]);
+  const [collections, setCollections] = useState([]);
 
-  useEffect(() => {
+  const vel = useMemo(() => {
+    console.log("cambio !");
     (async () => {
       const channels = await axios.get("http://localhost:3000/api/channels");
       setChannels(channels.data);
@@ -160,6 +227,41 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
       );
       setOutputFormats(outputFormats.data);
     })();
+    (async () => {
+      const collections = await fetch("http://localhost:3000/api/collections");
+      const data = await collections.json();
+      setCollections(data);
+    })();
+  }, []);
+
+  const listCollections = useMemo(() => {
+    console.log("load list collections");
+    return collections.map((collection) => (
+      <SelectItem key={collection.id} value={collection.id}>
+        {collection.name}
+      </SelectItem>
+    ));
+  }, [collections]);
+  useEffect(() => {
+    // (async () => {
+    //   const channels = await axios.get("http://localhost:3000/api/channels");
+    //   setChannels(channels.data);
+    // })();
+    // (async () => {
+    //   const countries = await axios.get("http://localhost:3000/api/countries");
+    //   setCountries(countries.data);
+    // })();
+    // (async () => {
+    //   const outputFormats = await axios.get(
+    //     "http://localhost:3000/api/output-formats"
+    //   );
+    //   setOutputFormats(outputFormats.data);
+    // })();
+    // (async () => {
+    //   const collections = await fetch("http://localhost:3000/api/collections");
+    //   const data = await collections.json();
+    //   setCollections(data);
+    // })();
   }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -215,6 +317,7 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
 
   return (
     <div className="h-full p-4 space-y-2 mx-auto">
+      {/* <SelectScrollable data={collections}></SelectScrollable> */}
       <Form {...form}>
         <form
           className="space-y-8 pb-10"
@@ -315,12 +418,13 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                         />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {COLLECTION.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
+                    <SelectContent className="overflow-y-auto max-h-[10rem]">
+                      {listCollections}
+                      {/* {collections.map((collection) => (
+                        <SelectItem key={collection.id} value={collection.id}>
+                          {collection.name}
                         </SelectItem>
-                      ))}
+                      ))} */}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -347,8 +451,8 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                         />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {IMAGESCOLLECTION.map((category) => (
+                    <SelectContent className="overflow-y-auto max-h-[10rem]">
+                      {collections.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -379,8 +483,8 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                         />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {LOGOCOLLECTION.map((category) => (
+                    <SelectContent className="overflow-y-auto max-h-[10rem]">
+                      {collections.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>
@@ -411,8 +515,8 @@ const ProjectForm = ({ initialData }: ProjectFormProps) => {
                         />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
-                      {BADGECOLLECTION.map((category) => (
+                    <SelectContent className="overflow-y-auto max-h-[10rem]">
+                      {collections.map((category) => (
                         <SelectItem key={category.id} value={category.id}>
                           {category.name}
                         </SelectItem>

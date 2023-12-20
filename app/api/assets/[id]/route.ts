@@ -53,6 +53,16 @@ export async function PATCH(
       logo,
       badged,
       qr,
+      country,
+      addOn,
+      language,
+      creativeImagePerson,
+      creativeImageScreen,
+      messagingBenefits,
+      tonality,
+      addressedGroup,
+      creativeImageText,
+      uniqueText,
     } = body;
 
     if (!params.id) {
@@ -92,6 +102,16 @@ export async function PATCH(
         logo,
         badged,
         qr,
+        country,
+        addOn,
+        language,
+        creativeImagePerson,
+        creativeImageScreen,
+        messagingBenefits,
+        tonality,
+        addressedGroup,
+        creativeImageText,
+        uniqueText,
       },
     });
 

@@ -30,6 +30,52 @@ model Channel {
   Projects Project[]
 }
 
+model Color {
+  id    String @id @default(uuid())
+  brand String
+  hex   String
+}
+
+model Addon {
+  id   String @id @default(uuid())
+  name String
+}
+
+model Language {
+  id   String @id @default(uuid())
+  name String
+}
+
+model CreativeImagePerson {
+  id   String @id @default(uuid())
+  name String
+}
+
+model CreativeImageScreen {
+  id   String @id @default(uuid())
+  name String
+}
+
+model MessagingBenefits {
+  id   String @id @default(uuid())
+  name String
+}
+
+model Tonality {
+  id   String @id @default(uuid())
+  name String
+}
+
+model AddressedGroup {
+  id   String @id @default(uuid())
+  name String
+}
+
+model CreativeImageText {
+  id   String @id @default(uuid())
+  name String
+}
+
 model Project {
   id               String   @id @default(uuid())
   name             String
@@ -57,21 +103,31 @@ model Project {
 }
 
 model Assets {
-  id              String   @id @default(uuid())
-  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId       String
-  statusId        Int
-  headline        String
-  subline         String
-  backgraundColor String
-  headlineColor   String
-  sublineColor    String
-  image           String
-  logo            String
-  badged          String
-  qr              String
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id                  String   @id @default(uuid())
+  project             Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId           String
+  statusId            Int
+  headline            String
+  subline             String
+  backgraundColor     String
+  headlineColor       String
+  sublineColor        String
+  image               String
+  logo                String
+  badged              String
+  qr                  String?
+  country             String
+  addOn               String?
+  language            String
+  creativeImagePerson String?
+  creativeImageScreen String?
+  messagingBenefits   String
+  tonality            String
+  addressedGroup      String?
+  creativeImageText   String?
+  uniqueText          String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@index([projectId])
 }

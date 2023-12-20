@@ -13,7 +13,7 @@ const NewAssetPage = async ({ params }: ProjectIdPageProps) => {
   const asset = await getAsset(params.id);
   return (
     <>
-      <AssetForm initialData={asset} projectId={params.projectId}></AssetForm>;
+      <AssetForm initialData={asset} projectId={params.projectId}></AssetForm>
     </>
   );
 };

@@ -19,24 +19,86 @@ const ASSETS = [
 ];
 
 const CHANNEL = [
-  { id: "1", name: "Goolge" },
-  { id: "2", name: "Spotify" },
-  { id: "3", name: "Tik Tok" },
-  { id: "4", name: "Offline" },
-  { id: "5", name: "Placid Template 5" },
+  { name: "Goolge" },
+  { name: "Spotify" },
+  { name: "Tik Tok" },
+  { name: "Offline" },
+  { name: "Placid Template 5" },
 ];
 
 const COUNTRY = [
-  { id: "1", name: "Germany", abbreviation: "DE" },
-  { id: "2", name: "Spain", abbreviation: "ES" },
-  { id: "3", name: "Italy", abbreviation: "" },
-  { id: "4", name: "Australia", abbreviation: "" },
+  { name: "Germany", abbreviation: "DE" },
+  { name: "Spain", abbreviation: "ES" },
+  { name: "Italy", abbreviation: "" },
+  { name: "Australia", abbreviation: "" },
 ];
 
+const ADDONS = [
+  { name: "Seal" },
+  { name: "Promotion" },
+  { name: "Countdown" },
+  { name: "Emoticon" },
+  { name: "Stopper" },
+  { name: "Convinience" },
+];
+
+const LANGUAGES = [
+  { name: "German" },
+  { name: "Spanish" },
+  { name: "Italian" },
+  { name: "French" },
+];
+
+const CREATIVE_IMAGE_PERSON = [
+  { name: "Person" },
+  { name: "Group" },
+  { name: "Environment Type" },
+];
+
+const CREATIVE_IMAGE_SCREEN = [{ name: "Application" }, { name: "Desktop" }];
+
+const MESSAGING_BENEFITS = [
+  { name: "Benefits - Price" },
+  { name: "Features - English" },
+];
+
+const TONALITY = [
+  { name: "Facts" },
+  { name: "Emotional" },
+  { name: "Educational" },
+  { name: "Funny" },
+];
+
+const ADDRESSED_GROUP = [
+  { name: "Married Couples" },
+  { name: "Pensioners" },
+  { name: "Expats" },
+  { name: "Parents" },
+  { name: "Non-filers" },
+  { name: "Students" },
+  { name: "1st Time Filers" },
+  { name: "Generic" },
+];
+
+const CREATIVE_IMAGE_TEXT = [{ name: "Headline" }, { name: "Text Block" }];
+
 const OUTPUTFORMAT = [
-  { id: "1", name: "Image" },
-  { id: "2", name: "Animation" },
-  { id: "3", name: "Video Composition" },
+  { name: "Image" },
+  { name: "Animation" },
+  { name: "Video Composition" },
+];
+
+const COLORS = [
+  { brand: "Lime green", hex: "#FFFFFF" },
+  { brand: "Lime green", hex: "#000000" },
+  { brand: "Lime green", hex: "#252525" },
+  { brand: "Lime green", hex: "#32C850" },
+  { brand: "Lime green", hex: "#006246" },
+  { brand: "Pine green", hex: "#FFFFFF" },
+  { brand: "Pine green", hex: "#000000" },
+  { brand: "Pine green", hex: "#C3C4FE" },
+  { brand: "Pine green", hex: "#F5EDA3" },
+  { brand: "Pine green", hex: "#A1EFA9" },
 ];
 
 async function main() {
@@ -59,6 +121,33 @@ async function main() {
     });
     await db.outputFormat.createMany({
       data: OUTPUTFORMAT,
+    });
+    await db.color.createMany({
+      data: COLORS,
+    });
+    await db.addon.createMany({
+      data: ADDONS,
+    });
+    await db.language.createMany({
+      data: LANGUAGES,
+    });
+    await db.creativeImagePerson.createMany({
+      data: CREATIVE_IMAGE_PERSON,
+    });
+    await db.creativeImageScreen.createMany({
+      data: CREATIVE_IMAGE_SCREEN,
+    });
+    await db.messagingBenefits.createMany({
+      data: MESSAGING_BENEFITS,
+    });
+    await db.tonality.createMany({
+      data: TONALITY,
+    });
+    await db.addressedGroup.createMany({
+      data: ADDRESSED_GROUP,
+    });
+    await db.creativeImageText.createMany({
+      data: CREATIVE_IMAGE_TEXT,
     });
   } catch (error) {
     console.error("Error seeding default projec:", error);
